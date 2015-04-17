@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<listeners xmlns="urn:arjuna:agility:listeners:1.1" version="1">
+    <listener name="agility/agility-audit/AuditPolicy">
+        <domain>databroker</domain>
+        <domain>default</domain>
+        <domain>datamanager</domain>
+    </listener>
+    <listener name="demodeploypolicy-1.0.0p1m1l/DataBrokerDeployPolicy">
+        <domain>databroker</domain>
+    </listener>
+    <listener name="sampledeploypolicy-1.0.0p1m2l/AcceptAllPolicy">
+        <domain>databroker</domain>
+        <domain>default</domain>
+        <domain>datamanager</domain>
+    </listener>
+    <listener name="demodeploypolicy-1.0.0p1m1l/FormCheckerPolicy">
+        <domain>default</domain>
+    </listener>
+</listeners>
