@@ -75,6 +75,18 @@
             <logger category="jacorb.config">
                 <level name="ERROR"/>
             </logger>
+            <logger category="com.arjuna.databroker">
+                <level name="FINE"/>
+            </logger>
+            <logger category="com.arjuna.dbplugins">
+                <level name="FINE"/>
+            </logger>
+            <logger category="com.arjuna.dbutils">
+                <level name="FINE"/>
+            </logger>
+            <logger category="com.arjuna.dbpolicy">
+                <level name="FINE"/>
+            </logger>
             <root-logger>
                 <level name="INFO"/>
                 <handlers>
@@ -108,8 +120,8 @@
                         <!--<validate-on-match>true</validate-on-match>-->
                     </validation>
                     <pool>
-						<flush-strategy>IdleConnections</flush-strategy>
-					</pool>
+                        <flush-strategy>IdleConnections</flush-strategy>
+                </pool>
                 </datasource>
                 <datasource jndi-name="java:jboss/datasources/PostgreSQLDS" enabled="${postgresql.enabled}" use-java-context="true" pool-name="PostgreSQLDS" use-ccm="true">
                     <connection-url>jdbc:postgresql://${env.OPENSHIFT_POSTGRESQL_DB_HOST}:${env.OPENSHIFT_POSTGRESQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}</connection-url>
@@ -125,8 +137,8 @@
                         <!--<validate-on-match>true</validate-on-match>-->
                     </validation>
                     <pool>
-						<flush-strategy>IdleConnections</flush-strategy>
-					</pool>
+                        <flush-strategy>IdleConnections</flush-strategy>
+                    </pool>
                 </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
@@ -236,7 +248,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jacorb:1.1">
             <orb>
-            	<initializers transactions="spec" security="on"/>
+                <initializers transactions="spec" security="on"/>
             </orb>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jaxr:1.0">
@@ -266,17 +278,17 @@
         <subsystem xmlns="urn:jboss:domain:jgroups:1.0" default-stack="tcp">
             <stack name="tcp">
                 <transport type="TCP" socket-binding="jgroups-tcp"> 
-                	<property name="external_addr">${env.OPENSHIFT_GEAR_DNS}</property>
+                    <property name="external_addr">${env.OPENSHIFT_GEAR_DNS}</property>
                     <property name="external_port">${env.OPENSHIFT_JBOSSAS_CLUSTER_PROXY_PORT}</property>
                     <property name="bind_port">${env.OPENSHIFT_JBOSSAS_CLUSTER_PORT}</property>
                     <property name="bind_addr">${env.OPENSHIFT_JBOSSAS_IP}</property>
                     <property name="defer_client_bind_addr">true</property>
                 </transport>
                 <protocol type="TCPPING">
-                	<property name="timeout">30000</property>
-                	<property name="initial_hosts">${env.OPENSHIFT_JBOSSAS_CLUSTER}</property>
-                	<property name="port_range">0</property>
-                	<property name="num_initial_members">1</property>
+                    <property name="timeout">30000</property>
+                    <property name="initial_hosts">${env.OPENSHIFT_JBOSSAS_CLUSTER}</property>
+                    <property name="port_range">0</property>
+                    <property name="num_initial_members">1</property>
                 </protocol>
                 <protocol type="MERGE2"/>
                 <protocol type="FD"/>
@@ -286,9 +298,9 @@
                 <protocol type="UNICAST2"/>
                 <protocol type="pbcast.STABLE"/>
                 <protocol type="AUTH">
-                        <property name="auth_class">org.jgroups.auth.MD5Token</property>
-                        <property name="token_hash">SHA</property>
-                        <property name="auth_value">${env.OPENSHIFT_SECRET_TOKEN}</property>
+                    <property name="auth_class">org.jgroups.auth.MD5Token</property>
+                    <property name="token_hash">SHA</property>
+                    <property name="auth_value">${env.OPENSHIFT_SECRET_TOKEN}</property>
                 </protocol>
                 <protocol type="pbcast.GMS"/>
                 <protocol type="UFC"/>
@@ -321,8 +333,7 @@
                 <journal-min-files>2</journal-min-files>
                 
                 <thread-pool-max-size>${messaging.thread.pool.max.size}</thread-pool-max-size>
- 	            <scheduled-thread-pool-max-size>${messaging.scheduled.thread.pool.max.size}</scheduled-thread-pool-max-size>
-
+                    <scheduled-thread-pool-max-size>${messaging.scheduled.thread.pool.max.size}</scheduled-thread-pool-max-size>
                 <connectors>
                     <netty-connector name="netty" socket-binding="messaging"/>
                     <netty-connector name="netty-throughput" socket-binding="messaging-throughput">
@@ -456,7 +467,12 @@
             <security-domains>
                 <security-domain name="other" cache-type="default">
                     <authentication>
-                        <login-module code="UsersRoles" flag="required"/>
+                        <login-module code="RealmUsersRoles" flag="required">
+                            <module-option name="usersProperties" value="${jboss.server.config.dir}/application-users.properties"/>
+                            <module-option name="rolesProperties" value="${jboss.server.config.dir}/application-roles.properties"/>
+                            <module-option name="realm" value="ApplicationRealm"/>
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                        </login-module>
                     </authentication>
                 </security-domain>
                 <security-domain name="jboss-web-policy" cache-type="default">
@@ -474,6 +490,18 @@
                         <login-module code="UsersRoles" flag="required">
                             <module-option name="usersProperties" value="${jboss.server.config.dir}/application-users.properties"/>
                             <module-option name="rolesProperties" value="${jboss.server.config.dir}/application-roles.properties"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
+                <security-domain name="DataBrokerWebPortalRealm" cache-type="default">
+                    <authentication>
+                        <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
+                            <module-option name="dsJndiName" value="java:jboss/datasources/PostgreSQLDS"/>
+                            <module-option name="principalsQuery" value="SELECT password FROM DBWP_Users WHERE username = ?"/>
+                            <module-option name="rolesQuery" value="SELECT rolename, rolegroup FROM DBWP_Roles WHERE username = ?"/>
+                            <module-option name="hashAlgorithm" value="SHA-512"/>
+                            <module-option name="hashEncoding" value="hex"/>
+                            <module-option name="unauthenticatedIdentity" value="guest"/>
                         </login-module>
                     </authentication>
                 </security-domain>
