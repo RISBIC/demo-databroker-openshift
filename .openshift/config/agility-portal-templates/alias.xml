@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serviceAgreement name="Alias"
+	xmlns="urn:arjuna:agility-portal:service-agreement-template:1.4">
+	<features>
+		<feature name="alias" type="simple:string" shared="true" />
+	</features>
+</serviceAgreement>
