@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo "predeploy'"
-echo "Coping 'agility-portal-templates'"
-cp -rp ${OPENSHIFT_REPO_DIR}/.openshift/config/agility-portal-templates ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
