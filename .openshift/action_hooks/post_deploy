@@ -1,4 +1,6 @@
 #!/bin/sh
 
 echo "Coping 'agility-portal-templates'"
+chmod u+rwx ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/agility-portal-templates
 cp -rp ${OPENSHIFT_REPO_DIR}/.openshift/config/agility-portal-templates ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+chmod a-w ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/agility-portal-templates
