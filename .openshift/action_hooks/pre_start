@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "Action: 'pre_start'"
