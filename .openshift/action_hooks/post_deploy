@@ -4,3 +4,24 @@ echo "Coping 'agility-portal-templates'"
 chmod u+rwx ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/agility-portal-templates
 cp -rp ${OPENSHIFT_REPO_DIR}/.openshift/config/agility-portal-templates ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
 chmod a-w ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/agility-portal-templates
+
+echo "Coping 'adverts_gateway.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/adverts_gateway.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'agility-listeners.xml'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/agility-listeners.xml ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'agility.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/agility.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'agreements_control.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/agreements_control.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'agreements_gateway.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/agreements_gateway.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'application-roles.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/application-roles.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'application-users.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/application-users.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
