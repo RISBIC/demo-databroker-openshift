@@ -9,6 +9,10 @@
         <domain>databroker</domain>
         <domain>datamanager</domain>
     </listener>
+    <listener name="demodeploypolicy-1.0.0p1m1l/CreateAdvertDeployPolicy">
+        <domain>databroker</domain>
+        <domain>datamanager</domain>
+    </listener>
     <listener name="sampledeploypolicy-1.0.0p1m2l/AcceptAllPolicy">
         <domain>databroker</domain>
         <domain>default</domain>
