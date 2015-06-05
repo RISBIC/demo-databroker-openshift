@@ -25,3 +25,9 @@ cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/application-roles.properties ${OPE
 
 echo "Coping 'application-users.properties'"
 cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/application-users.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'ckanapi.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/ckanapi.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
+
+echo "Coping 'endpoint.properties'"
+cp -p ${OPENSHIFT_REPO_DIR}/.openshift/config/endpoint.properties ${OPENSHIFT_JBOSSAS_DIR}/standalone/configuration/.
